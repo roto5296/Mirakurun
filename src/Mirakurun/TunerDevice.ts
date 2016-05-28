@@ -330,6 +330,9 @@ export default class TunerDevice extends events.EventEmitter {
 
                 this._process.stdin.write('\n');
             } else {
+                const timer = setTimeout(() => this._process.kill('SIGKILL'), 100);
+                this._process.once('exit', () => clearTimeout(timer));
+
                 this._process.kill('SIGTERM');
             }
         });
